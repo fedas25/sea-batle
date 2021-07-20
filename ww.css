@@ -1,0 +1,50 @@
+
+body {
+	background-color: black;
+	margin: 0 auto;
+}
+
+#board {
+	position: relative;
+	width: 500px;
+	height: 502px;
+	margin: auto;
+	background-color: #ffffff;
+	padding: 0;
+
+}
+
+td {
+	height: 123px;
+	width: 123px;
+	border: 1px solid red;
+	}
+
+table {
+	margin-top: 50px;
+	border-collapse: collapse;
+}
+form {
+	margin-top: 10px;
+}
+input {
+   right: 0px;
+   position: absolute;;
+   padding: 10px;
+   border-radius:5px;
+   border: 2px solid rgb(13, 115, 129);
+}
+
+#message {
+	font-size: 30px;
+	position: absolute;
+	left: 0;
+	top: -35px;
+}
+
+.hit {
+	background-color: #cc0000;
+}
+.miss {
+	background-color: #7d7f7d;
+}
