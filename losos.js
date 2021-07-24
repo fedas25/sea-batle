@@ -19,9 +19,9 @@ var model = {
 	shipLength : 2,
 	shipDeath : 0,
 	ships : [
-	{loc : [11,21], hit :  ["","hit"]},
-	{loc : [41,42], hit :  ["","hit"]}, 
-	{loc : [32,33], hit :  ["","hit"]} ],
+	{loc : [11,21], hit :  ["",""]},
+	{loc : [41,42], hit :  ["",""]}, 
+	{loc : [32,33], hit :  ["",""]} ],
 
 	fire : function (gues) {
 		var index;
@@ -101,6 +101,28 @@ var controler = {
 	}
 }
 
-controler.procesGues("A1");
-controler.procesGues("D1");
-controler.procesGues("C2");
+function init() {
+	var bon = document.getElementById("fierButton");
+	console.log(bon);
+	bon.onclick = faa;
+	var ban = document.getElementById("guessInput");
+	ban.onkeypress = enter;
+}
+
+function enter (e) {
+	var n = document.getElementById("fierButton");
+	if (e.keyCode === 13) {
+		n.click();
+		return false;
+	}
+}
+
+function faa() {
+	var doc = document.getElementById("guessInput");
+	var gues = doc.value;
+	controler.procesGues(gues);
+	doc.value = "";
+	event.preventDefault()
+}
+
+window.onload = init;
