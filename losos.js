@@ -75,24 +75,23 @@ var controler = {
 
 	},
 
-	testGeus : function (geus) {
+	testGeus : function (geus) { //A2
 		var alphavete = ["A","B","C","D"];
 		var startShar;
 		var row;
 		var goriz;
-		if (geus.length !== 2 || geus == null) {
-			return null;
+		if (
+			return null;geus.length !== 2 || geus == null) {
 			//alert("не те значения");
 		} else {
 			startShar = geus.charAt(0);
 			row = alphavete.indexOf(startShar) + 1;
-
 			goriz = geus.charAt(1);
 			if (isNaN(goriz) || isNaN(row)) {
 			//	alert("не те значения");
 			} else 
 				if (model.bordSize < goriz || model.bordSize < row || goriz < 1 || row < 1) {
-					//alert("не те значения");
+					//	alert("не те значения");
 				} else {
 					return row + goriz;
 				}
@@ -122,7 +121,7 @@ function faa() {
 	var gues = doc.value;
 	controler.procesGues(gues);
 	doc.value = "";
-	event.preventDefault()
+	event.preventDefault();
 }
 
 window.onload = init;
