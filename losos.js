@@ -14,14 +14,14 @@ var viev = {
 };
 
 var model = {
-	bordSize : 4,
+	bordSize : 5,
 	numShip : 3,
 	shipLength : 2,
 	shipDeath : 0,
 	ships : [
-	{loc : [11,21], hit :  ["",""]},
-	{loc : [41,42], hit :  ["",""]}, 
-	{loc : [32,33], hit :  ["",""]} ],
+	{loc : [0,0], hit :  ["",""]},
+	{loc : [0,0], hit :  ["",""]}, 
+	{loc : [0,0], hit :  ["",""]} ],
 
 	fire : function (gues) {
 		var index;
@@ -53,60 +53,103 @@ var model = {
 			}
 		}
 		return true;
+	},
+
+
+	genShipLoc : function () {
+		var location;
+		for (var i = 0; i < this.numShip; i++) {
+			do  {
+				location = this.genShip();
+			} while (this.testLoc(location));
+		this.ships[i].loc = location;
+		}
+	},
+
+	genShip : function () {
+		var smot = Math.floor(Math.random() * 2);
+		var row,col;
+		var newLocShip = [];
+		if (smot === 1) { // по горизонтали
+			row = 1 + Math.floor((Math.random() * (this.bordSize - (this.shipLength - 1))));
+			col = 1 + Math.floor(Math.random() * this.bordSize);
+		} else { // по вертикали
+			row = 1 + Math.floor(Math.random() * this.bordSize);
+			col = 1 + Math.floor((Math.random() * (this.bordSize - (this.shipLength - 1))));
+		}
+
+		for (var i = 0; i < this.shipLength; i++) {
+			if (smot === 1) { 	// по горизонтали
+				newLocShip.push(Number(col + "" + (row + i))); 
+			} else {  				// по вертикали
+				newLocShip.push(Number((col + i) + "" + row));
+			}
+		}
+		return newLocShip;
+	},
+
+	testLoc : function (location) {
+		for (var i = 0; i < this.numShip; i++)	{
+			var ship = model.ships[i];
+			for(var j = 0; j < location.length; j++) {
+				if (ship.loc.indexOf(location[j]) >= 0) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 };
 
 var controler = {
 	gues : 0,
-	procesGues : function (gues) { //координаты типа А2
-		var location = controler.testGeus(gues);
-		var hit;
-		if (location) {	
-			location = Number(location);
-			hit = model.fire(location);
-			if (hit) {
-				this.gues++;
-				console.log('');
-				if (hit && model.numShip === model.shipDeath) {
-					alert("победа за " + this.gues + " выстрелов")
-				}
+	procesGues : function (gues) { //координаты типа А2 или 12 и их проверка 
+		if (isNaN(gues)) {
+			var location = controler.testGeus(gues);
+			if (location) {
+				this.GuesTrue (location);
 			}
+		} else {
+			this.GuesTrue (gues);
 		} 
-
 	},
 
-	testGeus : function (geus) { //A2
-		var alphavete = ["A","B","C","D"];
+	GuesTrue : function (gues) {
+		gues = Number(gues);
+		var hit;
+		hit = model.fire(gues);
+		if (hit) {
+			this.gues++;
+			console.log('');
+			if (hit && model.numShip === model.shipDeath) {
+				alert("победа за " + this.gues + " выстрелов")
+			}
+		}
+	},
+
+	testGeus : function (geus) { //перевод ввовда координаты типа А2 превращаются в 12
+		var alphavete = ["A","B","C","D","E"];
 		var startShar;
 		var row;
 		var goriz;
-		if (
-			return null;geus.length !== 2 || geus == null) {
-			//alert("не те значения");
+		if (geus.length !== 2 || geus == null) {
+			return null;
+
 		} else {
 			startShar = geus.charAt(0);
 			row = alphavete.indexOf(startShar) + 1;
 			goriz = geus.charAt(1);
 			if (isNaN(goriz) || isNaN(row)) {
-			//	alert("не те значения");
 			} else 
 				if (model.bordSize < goriz || model.bordSize < row || goriz < 1 || row < 1) {
-					//	alert("не те значения");
+
 				} else {
 					return row + goriz;
 				}
 		}
 		return null;
 	}
-}
-
-function init() {
-	var bon = document.getElementById("fierButton");
-	console.log(bon);
-	bon.onclick = faa;
-	var ban = document.getElementById("guessInput");
-	ban.onkeypress = enter;
-}
+};
 
 function enter (e) {
 	var n = document.getElementById("fierButton");
@@ -116,12 +159,30 @@ function enter (e) {
 	}
 }
 
-function faa() {
+function faa() {  // кордината от формы
 	var doc = document.getElementById("guessInput");
 	var gues = doc.value;
 	controler.procesGues(gues);
 	doc.value = "";
-	event.preventDefault();
+	event.preventDefault()
 }
 
-window.onload = init;
+function klic () {  // обработчик событий на нажатие
+	var coub = document.getElementsByTagName("td");
+	for (var i = 0; i < coub.length; i++) {
+		coub[i].onclick = klikBoard;
+	}
+}
+function klikBoard (coub) {  // обработка сообщения от нажатия
+	var koob = coub.target.id;
+	controler.procesGues(koob);
+}
+
+window.onload = function () {
+	klic(); // обработчик событий на нажатие
+	var bon = document.getElementById("fierButton");   //кнопка
+	bon.onclick = faa;	//кнопка
+	var ban = document.getElementById("guessInput"); //ентер
+	ban.onkeypress = enter; //ентер
+	model.genShipLoc(); //ГЕНЕРАЦИЯ КОРАБЛИКОВ
+};
