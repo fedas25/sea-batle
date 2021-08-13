@@ -118,9 +118,8 @@ var controler = {
 		gues = Number(gues);
 		var hit;
 		hit = model.fire(gues);
+		this.gues++;
 		if (hit) {
-			this.gues++;
-			console.log('');
 			if (hit && model.numShip === model.shipDeath) {
 				alert("победа за " + this.gues + " выстрелов")
 			}
