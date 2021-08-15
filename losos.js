@@ -112,7 +112,7 @@ var model = {
 
 var controler = {
 	gues : 0,
-	procesGues : function (gues) { //координаты типа А2 или 12 и их проверка 
+	procesGues : function (gues) { //координаты типа А2 или 12 и их проверка
 		if (isNaN(gues)) {
 			var location = controler.testGeus(gues);
 			if (location) {
@@ -124,13 +124,15 @@ var controler = {
 	},
 
 	GuesTrue : function (gues) {
-		gues = Number(gues);
 		var hit;
-		hit = model.fire(gues);
-		this.gues++;
-		if (hit) {
-			if (hit && model.numShip === model.shipDeath) {
-				alert("победа за " + this.gues + " выстрелов")
+		if ((gues.substring(0,1) !== "") && (gues.substring(1) !== "")) { //проврка на клик вне поля
+			gues = Number(gues);
+			hit = model.fire(gues);
+			this.gues++;
+			if (hit) {
+				if (hit && model.numShip === model.shipDeath) {
+					alert("победа за " + this.gues + " выстрелов")
+				}
 			}
 		}
 	},
@@ -162,6 +164,7 @@ var controler = {
 var placement = { 
 	orientation : "hor", //or ver
 	coordinateSeeCursor : ["0","0"], //видимый кораблик
+	numberShipInstallation : 0,
 	pointingOnBlock : function (coordinate) {
 		let dontHorLoc;
 		coordinate = coordinate.target;
@@ -212,6 +215,13 @@ var placement = {
 		}
 	},
 
+	installingShip : function () {
+		if (placement.numberShipInstallation < 3) {
+			model.MyShips[placement.numberShipInstallation].loc[0] = placement.coordinateSeeCursor[0];
+			model.MyShips[placement.numberShipInstallation].loc[1] = placement.coordinateSeeCursor[1];
+			placement.numberShipInstallation++;
+		} 
+	}
 };
 
 
@@ -252,6 +262,7 @@ window.onload = function () {
 	let elements = document.querySelectorAll("div#board2 > table.one > tbody > tr > td"); //что это за tbody? Откуда он появился ?
 		for (let i = elements.length - 1; i >= 0; i--) {
 			elements[i].onmouseover = placement.pointingOnBlock; // зачем приставка on ?
+			elements[i].onmousedown = placement.installingShip;
 		}
 	document.addEventListener('keydown', placement.chooseOrientation);
 };
