@@ -10,6 +10,10 @@ var viev = {
 	disMiss : function (location) {
 		var divLoc = document.getElementById(location);
 		divLoc.setAttribute("class","miss");
+	},
+	disInitially : function (location) {
+		var divLoc = document.getElementById(location);
+		divLoc.setAttribute("class","");
 	}
 };
 
@@ -19,6 +23,11 @@ var model = {
 	shipLength : 2,
 	shipDeath : 0,
 	ships : [
+	{loc : [0,0], hit :  ["",""]},
+	{loc : [0,0], hit :  ["",""]}, 
+	{loc : [0,0], hit :  ["",""]} ],
+
+	MyShips : [
 	{loc : [0,0], hit :  ["",""]},
 	{loc : [0,0], hit :  ["",""]}, 
 	{loc : [0,0], hit :  ["",""]} ],
@@ -147,8 +156,64 @@ var controler = {
 				}
 		}
 		return null;
-	}
+	},
 };
+
+var placement = { 
+	orientation : "hor", //or ver
+	coordinateSeeCursor : ["0","0"], //видимый кораблик
+	pointingOnBlock : function (coordinate) {
+		let dontHorLoc;
+		coordinate = coordinate.target;
+		if (coordinate.id !== "") { 			 //проверка на неигровые ячейки поля (таблицы)
+			for (let i = 0; i < 2; i++) {		 //удаление предыдущего поля
+				if ((placement.coordinateSeeCursor[i] !== "0")) { // проверка на первый кораблик
+					viev.disInitially(placement.coordinateSeeCursor[i]);
+				}
+			}   // прикольчик получился при наведении на правый край
+			if (placement.orientation == "hor" && (coordinate.id.substring(2) < model.bordSize)) {   // проверка ореинтации и на выход за поле 
+				dontHorLoc = coordinate.id.substring(0,2); // строчка для горизонтали
+				for (let i = 0; i < 2; i++) { 
+					viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
+					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); // this тут не работает undefined
+				} 
+			} else if (coordinate.id.substring(1,2) > 1) { 
+				if (coordinate.id.substring(1,2) > 1) { // проверка на заступ сверху
+					dontHorLoc = coordinate.id.substring(0,1); // строчка для вертикали
+					for (let i = 0; i < 2; i++) {
+						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2));
+						placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2);
+					}
+				}
+			} else {
+				if (coordinate.id.substring(2) < model.bordSize) {
+					dontHorLoc = coordinate.id.substring(0,2); // строчка для горизонтали
+					for (let i = 0; i < 2; i++) { 
+						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
+						placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); // this тут не работает undefined 
+					} 
+				}
+			}
+		}
+	},
+
+	chooseOrientation : function (event) {
+		if (event.code == "Space") {
+			if (placement.orientation == "hor") {
+				placement.orientation = "ver";
+
+			} else {
+				placement.orientation = "hor";
+			}
+		}
+		let elements = document.querySelectorAll("div#board2 > table.one > tbody > tr > td"); //что это за tbody? Откуда он появился ?
+		for (let i = elements.length - 1; i >= 0; i--) {
+			elements[i].onmouseover = placement.pointingOnBlock; // зачем приставка on ?
+		}
+	},
+
+};
+
 
 function enter (e) {
 	var n = document.getElementById("fierButton");
@@ -184,4 +249,9 @@ window.onload = function () {
 	var ban = document.getElementById("guessInput"); //ентер
 	ban.onkeypress = enter; //ентер
 	model.genShipLoc(); //ГЕНЕРАЦИЯ КОРАБЛИКОВ
+	let elements = document.querySelectorAll("div#board2 > table.one > tbody > tr > td"); //что это за tbody? Откуда он появился ?
+		for (let i = elements.length - 1; i >= 0; i--) {
+			elements[i].onmouseover = placement.pointingOnBlock; // зачем приставка on ?
+		}
+	document.addEventListener('keydown', placement.chooseOrientation);
 };
