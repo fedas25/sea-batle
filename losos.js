@@ -297,4 +297,4 @@ window.onload = function () {
 			elements[i].onmousedown = placement.installingShip;
 		}
 	document.addEventListener('keydown', placement.chooseOrientation);
-};
+}; //шутка про тракториста
