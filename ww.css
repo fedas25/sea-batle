@@ -41,7 +41,7 @@ form {
 
 input {
    right: 0px;
-   position: absolute;;
+   position: absolute;
    padding: 10px;
 }
 
@@ -59,7 +59,9 @@ input {
 .miss {
 	background-color: #b3b3b3;
 }
-
+.miss_use {
+	background-color: #ffc0cb;
+}
 .num {
 	background-color: #0047ab;
 	color: #6699cc;

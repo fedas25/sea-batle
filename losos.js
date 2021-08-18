@@ -11,6 +11,10 @@ var viev = {
 		var divLoc = document.getElementById(location);
 		divLoc.setAttribute("class","miss");
 	},
+	disMissUser : function (location) {
+		var divLoc = document.getElementById(location);
+		divLoc.setAttribute("class","miss_use");
+	},
 	disInitially : function (location) {
 		var divLoc = document.getElementById(location);
 		divLoc.setAttribute("class","");
@@ -22,6 +26,7 @@ var model = {
 	numShip : 3,
 	shipLength : 2,
 	shipDeath : 0,
+	shipDeathPs : 0,
 	ships : [
 	{loc : [0,0], hit :  ["",""]},
 	{loc : [0,0], hit :  ["",""]}, 
@@ -109,9 +114,35 @@ var model = {
 	},
 
 	fireAtTheUser : function () {
-		let cor = String(Math.floor(Math.random() * model.bordSize) + 1);
-		cor = "u" + cor + (Math.floor(Math.random() * model.bordSize) + 1);
-		alert(cor);
+		let cor
+		let cell
+		cor = "u11";
+		cell = document.getElementById("u11");
+		while (cell.className == "hit" || cell.className == "miss_use") {
+			cor = String(Math.floor(Math.random() * model.bordSize) + 1);
+			cor = "u" + cor + (Math.floor(Math.random() * model.bordSize) + 1);
+			cell = document.getElementById(cor);
+		}
+		
+		if (cell.className == "miss") {
+			viev.disHit(cor);
+			for (let i = 0; i < model.numShip; i++) {
+				if (model.MyShips[i].loc.indexOf(cor) !== -1) {
+					model.MyShips[i].hit[model.MyShips[i].loc.indexOf(cor)] = "hit";
+				}
+				if (model.MyShips[i].hit.indexOf("") == -1) {
+					viev.disMessage("Ваш кораблик утопился");
+					model.MyShips[i].hit[0] = "";
+					console.log(model.MyShips[i].hit);
+					model.shipDeathPs++;
+					if (model.shipDeathPs == 3) {
+						alert("Вы проиграли компьютеру");
+					}
+				}
+			}
+		} else {
+			viev.disMissUser(cor);
+		}	
 	}
 };
 
@@ -140,6 +171,7 @@ var controler = {
 				}
 			}
 		}
+		model.fireAtTheUser();
 	},
 
 	testGeus : function (geus) { //перевод ввовда координаты типа А2 превращаются в 12
@@ -286,9 +318,9 @@ function klikBoard (coub) {  // обработка сообщения от на�
 
 window.onload = function () {
 	klic(); // обработчик событий на нажатие
-	var bon = document.getElementById("fierButton");   //кнопка
+	let bon = document.getElementById("fierButton");   //кнопка
 	bon.onclick = faa;	//кнопка
-	var ban = document.getElementById("guessInput"); //ентер
+	let ban = document.getElementById("guessInput"); //ентер
 	ban.onkeypress = enter; //ентер
 	model.genShipLoc(); //ГЕНЕРАЦИЯ КОРАБЛИКОВ
 	let elements = document.querySelectorAll("div#board2 > table.one > tbody > tr > td"); //что это за tbody? Откуда он появился ?
