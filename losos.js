@@ -64,7 +64,6 @@ var model = {
 		return true;
 	},
 
-
 	genShipLoc : function () {
 		var location;
 		for (var i = 0; i < this.numShip; i++) {
@@ -107,6 +106,12 @@ var model = {
 			}
 		}
 		return false;
+	},
+
+	fireAtTheUser : function () {
+		let cor = String(Math.floor(Math.random() * model.bordSize) + 1);
+		cor = "u" + cor + (Math.floor(Math.random() * model.bordSize) + 1);
+		alert(cor);
 	}
 };
 
@@ -165,27 +170,52 @@ var placement = {
 	orientation : "hor", //or ver
 	coordinateSeeCursor : ["0","0"], //видимый кораблик
 	numberShipInstallation : 0,
+	placemenTOfShips : true,
 	pointingOnBlock : function (coordinate) {
 		let dontHorLoc;
+		let ThereAreShips = false;
 		coordinate = coordinate.target;
-		if (coordinate.id !== "") { 			 //проверка на неигровые ячейки поля (таблицы)
+		if (coordinate.id !== "" && placement.placemenTOfShips ) { 		 //проверка на неигровые ячейки поля (таблицы)
+			for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для обеления поля
+				if (model.MyShips[i].loc.includes(placement.coordinateSeeCursor[0]) || model.MyShips[i].loc.includes(placement.coordinateSeeCursor[1])) {
+						ThereAreShips = true;
+				}
+			}
+
 			for (let i = 0; i < 2; i++) {		 //удаление предыдущего поля
-				if ((placement.coordinateSeeCursor[i] !== "0")) { // проверка на первый кораблик
+				if ((placement.coordinateSeeCursor[i] !== "0") && !ThereAreShips) { // проверка на первый кораблик
 					viev.disInitially(placement.coordinateSeeCursor[i]);
 				}
-			}   // прикольчик получился при наведении на правый край
+			}
+
+			ThereAreShips = false; // обнуление переменной
+ // прикольчик получился при наведении на правый край 
+			
 			if (placement.orientation == "hor" && (coordinate.id.substring(2) < model.bordSize)) {   // проверка ореинтации и на выход за поле 
 				dontHorLoc = coordinate.id.substring(0,2); // строчка для горизонтали
+				for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для нерисования клеток
+					if (model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(2)) + 1)) || model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(2)) + 0))) {
+						ThereAreShips = true;
+					}
+				}
 				for (let i = 0; i < 2; i++) { 
-					viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
-					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); // this тут не работает undefined
-				} 
-			} else if (coordinate.id.substring(1,2) > 1) { 
-				if (coordinate.id.substring(1,2) > 1) { // проверка на заступ сверху
-					dontHorLoc = coordinate.id.substring(0,1); // строчка для вертикали
-					for (let i = 0; i < 2; i++) {
+					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); //пропихиапние кординаты корабля для очистки this тут не работает undefined
+					if (!ThereAreShips) {
+						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
+					}
+				}
+ //да жтоже это
+			}  else if (coordinate.id.substring(1,2) > 1) { // проверка на заступ сверху
+				dontHorLoc = coordinate.id.substring(0,1); // строчка для вертикали
+				for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для нерисования клеток
+					if (model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(1,2)) - 1) + coordinate.id.substring(2)) || model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(1,2)) - 0) + coordinate.id.substring(2))) {
+						ThereAreShips = true;
+					}
+				}
+				for (let i = 0; i < 2; i++) {
+					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2);
+					if (!ThereAreShips) {
 						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2));
-						placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2);
 					}
 				}
 			} else {
@@ -197,6 +227,16 @@ var placement = {
 					} 
 				}
 			}
+		}
+	},
+	installingShip : function () {
+		if (placement.numberShipInstallation < 3) {
+			model.MyShips[placement.numberShipInstallation].loc[0] = placement.coordinateSeeCursor[0];
+			model.MyShips[placement.numberShipInstallation].loc[1] = placement.coordinateSeeCursor[1];
+			placement.numberShipInstallation++;
+		}
+		if (placement.numberShipInstallation == 3) { //остановка режима заполнения поля
+			placement.placemenTOfShips = false;
 		}
 	},
 
@@ -213,17 +253,9 @@ var placement = {
 		for (let i = elements.length - 1; i >= 0; i--) {
 			elements[i].onmouseover = placement.pointingOnBlock; // зачем приставка on ?
 		}
-	},
-
-	installingShip : function () {
-		if (placement.numberShipInstallation < 3) {
-			model.MyShips[placement.numberShipInstallation].loc[0] = placement.coordinateSeeCursor[0];
-			model.MyShips[placement.numberShipInstallation].loc[1] = placement.coordinateSeeCursor[1];
-			placement.numberShipInstallation++;
-		} 
 	}
-};
 
+};
 
 function enter (e) {
 	var n = document.getElementById("fierButton");
