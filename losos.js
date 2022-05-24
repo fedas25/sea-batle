@@ -22,9 +22,9 @@ var viev = {
 };
 
 var model = {
-	bordSize : 5,
-	numShip : 3,
-	shipLength : 2,
+	bordSize : 9,
+	numShip : 3, // 10 для красоты
+	shipLength : 2,  // до 4-1
 	shipDeath : 0,
 	shipDeathPs : 0,
 	ships : [
@@ -221,7 +221,6 @@ var placement = {
 			}
 
 			ThereAreShips = false; // обнуление переменной
- // прикольчик получился при наведении на правый край 
 			
 			if (placement.orientation == "hor" && (coordinate.id.substring(2) < model.bordSize)) {   // проверка ореинтации и на выход за поле 
 				dontHorLoc = coordinate.id.substring(0,2); // строчка для горизонтали
@@ -236,7 +235,7 @@ var placement = {
 						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
 					}
 				}
- //да жтоже это
+
 			}  else if (coordinate.id.substring(1,2) > 1) { // проверка на заступ сверху
 				dontHorLoc = coordinate.id.substring(0,1); // строчка для вертикали
 				for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для нерисования клеток
