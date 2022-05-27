@@ -23,14 +23,21 @@ var viev = {
 
 var model = {
 	bordSize : 9,
-	numShip : 3, // 10 для красоты
+	numShip : 3, // 10 работает но не нормамльно
 	shipLength : 2,  // до 4-1
 	shipDeath : 0,
 	shipDeathPs : 0,
 	ships : [
-	{loc : [0,0], hit :  ["",""]},
-	{loc : [0,0], hit :  ["",""]}, 
-	{loc : [0,0], hit :  ["",""]} ],
+		{loc : [0,0,0,0], hit :  ["","","",""]},
+		{loc : [0,0,0], hit :  ["","",""]},
+		{loc : [0,0,0], hit :  ["","",""]},
+		{loc : [0,0], hit :  ["",""]},
+		{loc : [0,0], hit :  ["",""]},
+		{loc : [0,0], hit :  ["",""]},
+		{loc : [0], hit :  [""]}, 
+		{loc : [0], hit :  [""]}, 
+		{loc : [0], hit :  [""]}, 
+		{loc : [0], hit :  [""]}],
 
 	MyShips : [
 	{loc : [0,0], hit :  ["",""]},
@@ -72,23 +79,27 @@ var model = {
 	genShipLoc : function () {
 		var location;
 		for (var i = 0; i < this.numShip; i++) {
+			this.shipLength = this.ships[i].loc.length;
 			do  {
 				location = this.genShip();
 			} while (this.testLoc(location));
+		
 		this.ships[i].loc = location;
+		
 		}
+
 	},
 
 	genShip : function () {
-		var smot = Math.floor(Math.random() * 2);
-		var row,col;
+		var smot = Math.floor(Math.random() * 2); // куды смотрит корабль
+		var row, col;
 		var newLocShip = [];
 		if (smot === 1) { // по горизонтали
-			row = 1 + Math.floor((Math.random() * (this.bordSize - (this.shipLength - 1))));
+			row = 1 + Math.floor((Math.random() * (this.bordSize - (this.shipLength - 1)))); // шоб в за границу не уплыл
 			col = 1 + Math.floor(Math.random() * this.bordSize);
 		} else { // по вертикали
 			row = 1 + Math.floor(Math.random() * this.bordSize);
-			col = 1 + Math.floor((Math.random() * (this.bordSize - (this.shipLength - 1))));
+			col = 1 + Math.floor((Math.random() * (this.bordSize - (this.shipLength - 1)))); // шоб в за границу не уплыл
 		}
 
 		for (var i = 0; i < this.shipLength; i++) {
@@ -103,9 +114,8 @@ var model = {
 
 	testLoc : function (location) {
 		for (var i = 0; i < this.numShip; i++)	{
-			var ship = model.ships[i];
 			for(var j = 0; j < location.length; j++) {
-				if (ship.loc.indexOf(location[j]) >= 0) {
+				if (model.ships[i].loc.indexOf(location[j]) >= 0) { // проверка на наличие
 					return true;
 				}
 			}
