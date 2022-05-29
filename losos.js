@@ -23,8 +23,8 @@ var viev = {
 
 var model = {
 	bordSize : 9,
-	numShip : 3, // 10 работает но не нормамльно
-	shipLength : 2,  // до 4-1
+	numShip : 10, 
+	shipLength : 4,
 	shipDeath : 0,
 	shipDeathPs : 0,
 	ships : [
@@ -40,9 +40,16 @@ var model = {
 		{loc : [0], hit :  [""]}],
 
 	MyShips : [
-	{loc : [0,0], hit :  ["",""]},
-	{loc : [0,0], hit :  ["",""]}, 
-	{loc : [0,0], hit :  ["",""]} ],
+		{loc : [0,0,0,0], hit :  ["","","",""]},
+		{loc : [0,0,0], hit :  ["","",""]},
+		{loc : [0,0,0], hit :  ["","",""]},
+		{loc : [0,0], hit :  ["",""]},
+		{loc : [0,0], hit :  ["",""]},
+		{loc : [0,0], hit :  ["",""]},
+		{loc : [0], hit :  [""]}, 
+		{loc : [0], hit :  [""]}, 
+		{loc : [0], hit :  [""]}, 
+		{loc : [0], hit :  [""]}],
 
 	fire : function (gues) {
 		var index;
@@ -210,73 +217,106 @@ var controler = {
 
 var placement = { 
 	orientation : "hor", //or ver
-	coordinateSeeCursor : ["0","0"], //видимый кораблик
+	coordinateSeeCursor : ["0","0","0","0"], //видимый кораблик
 	numberShipInstallation : 0,
 	placemenTOfShips : true,
+
 	pointingOnBlock : function (coordinate) {
+
+		let shipLength;
 		let dontHorLoc;
 		let ThereAreShips = false;
-		coordinate = coordinate.target;
+		coordinate = coordinate.target;		
+
+		for (let i = 0; i < model.MyShips.length; i++) { // определение длины видимого корабля
+			if (model.MyShips[i].loc[0] == 0) {
+				shipLength = model.MyShips[i].loc.length;
+				i = 10;
+			}
+		}
+
 		if (coordinate.id !== "" && placement.placemenTOfShips ) { 		 //проверка на неигровые ячейки поля (таблицы)
-			for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для обеления поля
-				if (model.MyShips[i].loc.includes(placement.coordinateSeeCursor[0]) || model.MyShips[i].loc.includes(placement.coordinateSeeCursor[1])) {
+			for (let i = 0; i < 10; i++) { // кол-во кораблей // проверка на наличие установленного корабля для обеления поля
+				for (let j = 0; j < shipLength; j++) { // длина корабля видимого
+					if (model.MyShips[i].loc.includes(placement.coordinateSeeCursor[j])) { // установленный кораблик
 						ThereAreShips = true;
+					}
 				}
 			}
 
-			for (let i = 0; i < 2; i++) {		 //удаление предыдущего поля
+			for (let i = 0; i < shipLength; i++) {		 // размер корабля видимого // удаление предыдущего поля
 				if ((placement.coordinateSeeCursor[i] !== "0") && !ThereAreShips) { // проверка на первый кораблик
 					viev.disInitially(placement.coordinateSeeCursor[i]);
 				}
 			}
 
 			ThereAreShips = false; // обнуление переменной
-			
-			if (placement.orientation == "hor" && (coordinate.id.substring(2) < model.bordSize)) {   // проверка ореинтации и на выход за поле 
-				dontHorLoc = coordinate.id.substring(0,2); // строчка для горизонтали
-				for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для нерисования клеток
-					if (model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(2)) + 1)) || model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(2)) + 0))) {
+
+			if (placement.orientation == "hor" && ((Number(coordinate.id.substring(2)) + (shipLength - 2)) < model.bordSize)) {// коэфициент   // проверка ореинтации и на выход за поле для переварота проверяется на правую
+				dontHorLoc = coordinate.id.substring(0,2); // первые два символа
+				 // строчка для горизонтал   
+				for (let i = 0; i < 10; i++) {// кол во кораблей // проверка на наличие установленного корабля для нерисования клеток
+					// коэфициенты
+					if (model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(2)) + (shipLength - 1))) ||// коэфициент  // от и до смотрит
+						model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(2)) + 0))) {
 						ThereAreShips = true;
-					}
-				}
-				for (let i = 0; i < 2; i++) { 
-					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); //пропихиапние кординаты корабля для очистки this тут не работает undefined
-					if (!ThereAreShips) {
-						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
 					}
 				}
 
-			}  else if (coordinate.id.substring(1,2) > 1) { // проверка на заступ сверху
-				dontHorLoc = coordinate.id.substring(0,1); // строчка для вертикали
-				for (let i = 0; i < model.numShip; i++) { // проверка на наличие установленного корабля для нерисования клеток
-					if (model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(1,2)) - 1) + coordinate.id.substring(2)) || model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(1,2)) - 0) + coordinate.id.substring(2))) {
-						ThereAreShips = true;
+				for (let i = 0; i < shipLength; i++) { // размер корабля
+					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); //пропихиапние кординаты корабля локальные
+					if (!ThereAreShips) {
+						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));  // рисуем кораблик
 					}
 				}
-				for (let i = 0; i < 2; i++) {
+
+				// пока до сюда
+				// дошёл, молодец
+				// да молодец
+
+			}  else if ((Number(coordinate.id.substring(1,2)) + (2 - shipLength )) > 1) { // проверка на заступ сверху
+				dontHorLoc = coordinate.id.substring(0,1); // строчка для вертикали
+				for (let i = 0; i < 10; i++) { // проверка на наличие установленного корабля для нерисования клеток
+					if (model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(1,2)) + (1 - shipLength )) + coordinate.id.substring(2)) ||
+						model.MyShips[i].loc.includes(dontHorLoc + (Number(coordinate.id.substring(1,2)) - 0) + coordinate.id.substring(2))) {
+						ThereAreShips = true;
+					} 
+				}
+				for (let i = 0; i < shipLength; i++) { // рисует кораблики 
 					placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2);
 					if (!ThereAreShips) {
 						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(1,2)) - i) + coordinate.id.substring(2));
 					}
 				}
+
+				// сделал ?
+				// работает
+				// работает 
 			} else {
-				if (coordinate.id.substring(2) < model.bordSize) {
+				if ((Number(coordinate.id.substring(2)) + (shipLength - 2)) < model.bordSize) { // проверка на заступ с боку
 					dontHorLoc = coordinate.id.substring(0,2); // строчка для горизонтали
-					for (let i = 0; i < 2; i++) { 
+					for (let i = 0; i < shipLength; i++) { 
 						viev.disMiss(dontHorLoc + (Number(coordinate.id.substring(2)) + i));
-						placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i); // this тут не работает undefined 
+						placement.coordinateSeeCursor[i] = dontHorLoc + (Number(coordinate.id.substring(2)) + i);
 					} 
 				}
 			}
 		}
 	},
-	installingShip : function () {
-		if (placement.numberShipInstallation < 3) {
-			model.MyShips[placement.numberShipInstallation].loc[0] = placement.coordinateSeeCursor[0];
-			model.MyShips[placement.numberShipInstallation].loc[1] = placement.coordinateSeeCursor[1];
+
+
+	installingShip : function () { // надо добить до 10 как то 
+		if (placement.numberShipInstallation < 10) {
+
+			for (let i = 0; i < model.MyShips[placement.numberShipInstallation].loc.length; i++ ) {
+				model.MyShips[placement.numberShipInstallation].loc[i] = placement.coordinateSeeCursor[i];
+			}
+			// debugger
 			placement.numberShipInstallation++;
+			
+			
 		}
-		if (placement.numberShipInstallation == 3) { //остановка режима заполнения поля
+		if (placement.numberShipInstallation == 10) { //остановка режима заполнения поля
 			placement.placemenTOfShips = false;
 		}
 	},
