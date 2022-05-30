@@ -61,6 +61,7 @@ var model = {
 				ship.hit[index] = "hit";
 				viev.disHit(gues);
 				viev.disMessage("Корабль подбит");
+				// debugger
 				if (this.isSun(ship)) {
 					this.shipDeath++;
 					viev.disMessage("Корабль потоплен");
@@ -75,7 +76,7 @@ var model = {
 	},
 
 	isSun : function (ship) {
-		for (var i = 0; i < this.shipLength; i++) {
+		for (var i = 0; i < ship.loc.length; i++) {
 			if (ship.hit[i] == !"hit") {
 				return false;
 			}
@@ -146,13 +147,13 @@ var model = {
 			for (let i = 0; i < model.numShip; i++) {
 				if (model.MyShips[i].loc.indexOf(cor) !== -1) {
 					model.MyShips[i].hit[model.MyShips[i].loc.indexOf(cor)] = "hit";
-				}
+				} 
 				if (model.MyShips[i].hit.indexOf("") == -1) {
 					viev.disMessage("Ваш кораблик утопился");
 					model.MyShips[i].hit[0] = "";
 					console.log(model.MyShips[i].hit);
 					model.shipDeathPs++;
-					if (model.shipDeathPs == 3) {
+					if (model.shipDeathPs == 10) {
 						alert("Вы проиграли компьютеру");
 					}
 				}
@@ -178,6 +179,7 @@ var controler = {
 
 	GuesTrue : function (gues) {
 		var hit;
+		// debugger
 		if ((gues.substring(0,1) !== "") && (gues.substring(1) !== "")) { //проврка на клик вне поля
 			gues = Number(gues);
 			hit = model.fire(gues);
