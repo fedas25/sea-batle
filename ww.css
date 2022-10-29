@@ -52,6 +52,16 @@ html {
 	top: 20px;
 }
 
+.cloud:nth-of-type(7) {
+	left: -300px;
+	top: 120px;
+}
+
+.cloud:nth-of-type(8) {
+	left: -450px;
+	top: 20px;
+}
+
 .bacground-sea-img {
 	height: 45%;
 	width: 100%;
