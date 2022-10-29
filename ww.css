@@ -1,6 +1,67 @@
+html {
+	height: 100%;
+}
+
+.cloud {
+	position: fixed;
+	height: 150px;
+	width: 320px;
+	/* transition: all 0.1s; */
+	/* height: 10%;
+	width: 13%; */
+	/* animation-duration: 10s;
+	animation-name: cloud; */
+}
+
+/* @keyframes cloud {
+	0% {
+		left: 0;
+	}
+	100% {
+		left: 2500px;
+	}
+} */
+
+.cloud:nth-of-type(1) {
+	left: 50px;
+	top: 80px;
+}
+
+.cloud:nth-of-type(2) {
+	left: 390px;
+	top: 180px;
+}
+
+.cloud:nth-of-type(3) {
+	left: 650px;
+	top: 15px;
+}
+
+.cloud:nth-of-type(4) {
+	left: 950px;
+	top: 90px;
+}
+
+.cloud:nth-of-type(5) {
+	left: 1300px;
+	top: 130px;
+}
+
+.cloud:nth-of-type(6) {
+	left: 1500px;
+	top: 20px;
+}
+
+.bacground-sea-img {
+	height: 45%;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
 
 body {
-	background-color: #0047ab;
+	/* background-color: #0047ab; */
+	background: linear-gradient(180deg, #BACEDD 44.38%, #E89D9D 95.35%);
 	margin: 0 auto;
 }
 #bboard {
@@ -70,4 +131,3 @@ input {
 	text-align: center;
 	font-size: 60px;
 }
-
