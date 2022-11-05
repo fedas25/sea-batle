@@ -397,4 +397,4 @@ function flyingСlouds() {
 
 	requestAnimationFrame(flyingСlouds);
 }
-flyingСlouds();
+requestAnimationFrame(flyingСlouds);
