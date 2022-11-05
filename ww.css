@@ -1,3 +1,4 @@
+
 html {
 	height: 100%;
 }
@@ -29,8 +30,8 @@ html {
 }
 
 .cloud:nth-of-type(3) {
-	left: 1270px;
-	top: 15px;
+	left: 1245px;
+	top: 20px;
 }
 
 .cloud:nth-of-type(4) {
@@ -42,10 +43,10 @@ html {
 	left: 1220px;
 	top: 260px;
 }
-/*  */
+
 .cloud:nth-of-type(6) {
 	left: 830px;
-	top: 0px;
+	top: -15px;
 }
 
 .cloud:nth-of-type(7) {
@@ -58,8 +59,69 @@ html {
 	top: 315px;
 }
 
+.cloud:nth-of-type(9) {
+	left: 495px;
+	top: 10px;
+}
+
+.cloud:nth-of-type(10) {
+	left: 645px;
+	top: 180px;
+}
+
+.cloud:nth-of-type(11) {
+	left: 225px;
+	top: 90px;
+}
+
+.cloud:nth-of-type(12) {
+	left: 350px;
+	top: 260px;
+}
+
+.cloud:nth-of-type(13) {
+	left: -190px;
+	top: -25px;
+}
+
+.cloud:nth-of-type(14) {
+	left: 65px;
+    top: 95px;
+}
+
+.cloud:nth-of-type(15) {
+    left: -60px;
+    top: 205px;
+}
+
+.cloud:nth-of-type(16) {
+	left: 1760px;
+    top: 100px;
+}
+
+.cloud:nth-of-type(17) {
+	left: 1650px;
+    top: 265px;
+}
+
+.cloud:nth-of-type(18) {
+	left: -500px;
+    top: 35px;
+}
+
+.cloud:nth-of-type(19) {
+	left: -340px;
+    top: 150px;
+}
+
+.cloud:nth-of-type(20) {
+	left: -600px;
+    top: 250px;
+}
+
+
 .bacground-sea-img {
-	height: 52%;
+	height: 40%;
 	width: 100%;
 	position: absolute;
 	bottom: 0;

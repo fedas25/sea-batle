@@ -91,9 +91,9 @@
 // 			do  {
 // 				location = this.genShip();
 // 			} while (this.testLoc(location));
-		
+
 // 		this.ships[i].loc = location;
-		
+
 // 		}
 
 // 	},
@@ -141,7 +141,7 @@
 // 			cor = "u" + cor + (Math.floor(Math.random() * model.bordSize) + 1);
 // 			cell = document.getElementById(cor);
 // 		}
-		
+
 // 		if (cell.className == "miss") {
 // 			viev.disHit(cor);
 // 			for (let i = 0; i < model.numShip; i++) {
@@ -315,8 +315,8 @@
 // 			}
 // 			// debugger
 // 			placement.numberShipInstallation++;
-			
-			
+
+
 // 		}
 // 		if (placement.numberShipInstallation == 10) { //остановка режима заполнения поля
 // 			placement.placemenTOfShips = false;
@@ -382,16 +382,19 @@
 // 	document.addEventListener('keydown', placement.chooseOrientation);
 // }; //шутка про тракториста
 
-function flyingСlouds () {
-	const clouds = document.querySelectorAll(".cloud");
+
+const clouds = document.querySelectorAll(".cloud");
+
+function flyingСlouds() {
+
 	for (let cloud of clouds) {
-		// console.log(cloud.style.left);
 		const cloudLeft = cloud.getBoundingClientRect().left;
 		cloud.style.left = `${cloudLeft + 1}px`;
-		if (window.innerWidth + 350 < cloudLeft) {
-			cloud.style.left = "-350px";
+		if (window.innerWidth + 310 < cloudLeft) {
+			cloud.style.left = "-340px";
 		}
 	}
+
 	requestAnimationFrame(flyingСlouds);
 }
 flyingСlouds();
