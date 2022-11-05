@@ -384,17 +384,18 @@
 
 
 const clouds = document.querySelectorAll(".cloud");
+let presenceAnimation = false;
 
 function flyingСlouds() {
-
-	for (let cloud of clouds) {
-		const cloudLeft = cloud.getBoundingClientRect().left;
-		cloud.style.left = `${cloudLeft + 1}px`;
-		if (window.innerWidth + 310 < cloudLeft) {
-			cloud.style.left = "-340px";
+	if (presenceAnimation = !presenceAnimation) {
+		for (let cloud of clouds) {
+			const cloudLeft = Math.round(cloud.getBoundingClientRect().left);
+			cloud.style.left = `${cloudLeft + 1}px`;
+			if (window.innerWidth + 310 < cloudLeft) {
+				cloud.style.left = "-340px";
+			}
 		}
 	}
-
 	requestAnimationFrame(flyingСlouds);
 }
 requestAnimationFrame(flyingСlouds);
