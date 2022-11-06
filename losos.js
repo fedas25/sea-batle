@@ -385,17 +385,21 @@
 
 const clouds = document.querySelectorAll(".cloud");
 let presenceAnimation = false;
+let WidthWindow = window.innerWidth + 310;
+
+function changeDistanceDeletingCloud() {
+	WidthWindow = window.innerWidth + 310;
+}
 
 function flyingСlouds() {
 	if (presenceAnimation = !presenceAnimation) {
 		for (let cloud of clouds) {
-			const cloudLeft = Math.round(cloud.getBoundingClientRect().left);
-			cloud.style.left = `${cloudLeft + 1}px`;
-			if (window.innerWidth + 310 < cloudLeft) {
-				cloud.style.left = "-340px";
-			}
+			const cloudLeft = Math.round(cloud.getBoundingClientRect().left) + 1;
+			cloud.style.left = (WidthWindow < cloudLeft) ? "-340px" : cloudLeft + "px";
 		}
 	}
 	requestAnimationFrame(flyingСlouds);
 }
+
+window.addEventListener("reset", changeDistanceDeletingCloud);
 requestAnimationFrame(flyingСlouds);
