@@ -389,7 +389,7 @@
 let WidthWindow = 1920 + 310;
 const clouds = document.querySelectorAll(".cloud");
 let cloudLeft = null;
-let newcloudLeft = null;
+let newCloudLeft = null;
 let presenceAnimation = false;
 
 function flyingСlouds() {
@@ -397,14 +397,15 @@ function flyingСlouds() {
 		for (let cloud of clouds) {
 			cloudLeft = Math.round(cloud.getBoundingClientRect().left);
 			if (WidthWindow > cloudLeft) {
-				newcloudLeft = cloudLeft + 1;
-				cloud.style.transform = `translate(${newcloudLeft}px)`;
+				newCloudLeft = cloudLeft + 1;
+				cloud.style.transform = `translate(${newCloudLeft}px)`;
 			} else {
 				cloud.style.transform = `translate(-340px)`; 
 			}
 		}
 	}
+	requestAnimationFrame(flyingСlouds);
 }
-requestAnimationFrame(flyingСlouds);
+
 
 flyingСlouds()
