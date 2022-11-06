@@ -383,6 +383,9 @@
 // };
 
 
+
+// let presenceAnimation = false; window.innerWidth
+
 let WidthWindow = 1920 + 310;
 const clouds = document.querySelectorAll(".cloud");
 let cloudLeft = null;
@@ -401,7 +404,7 @@ function flyingСlouds() {
 			}
 		}
 	}
-	requestAnimationFrame(flyingСlouds);
 }
+requestAnimationFrame(flyingСlouds);
 
 flyingСlouds()
