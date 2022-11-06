@@ -395,7 +395,8 @@ function flyingСlouds() {
 	if (presenceAnimation = !presenceAnimation) {
 		for (let cloud of clouds) {
 			const cloudLeft = Math.round(cloud.getBoundingClientRect().left) + 1;
-			cloud.style.left = (WidthWindow < cloudLeft) ? "-340px" : cloudLeft + "px";
+			cloudLeft = cloudLeft + "px";
+			cloud.style.left = (WidthWindow > cloudLeft) ? cloudLeft : "-340px";
 		}
 	}
 	requestAnimationFrame(flyingСlouds);
