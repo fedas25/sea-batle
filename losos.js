@@ -394,9 +394,13 @@ function changeDistanceDeletingCloud() {
 function flyingСlouds() {
 	if (presenceAnimation = !presenceAnimation) {
 		for (let cloud of clouds) {
-			const cloudLeft = Math.round(cloud.getBoundingClientRect().left) + 1;
-			cloudLeft = cloudLeft + "px";
-			cloud.style.left = (WidthWindow > cloudLeft) ? cloudLeft : "-340px";
+			let cloudLeft = Math.round(cloud.getBoundingClientRect().left) + 1;
+			if (WidthWindow > cloudLeft) {
+				cloudLeft = cloudLeft + "px";
+				cloud.style.left = cloudLeft;
+			} else {
+				cloud.style.left = "-340px";
+			}
 		}
 	}
 	requestAnimationFrame(flyingСlouds);
