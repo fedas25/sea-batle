@@ -384,27 +384,26 @@
 
 
 
-// const clouds = document.querySelectorAll(".cloud");
-// let presenceAnimation = false;
-// let WidthWindow = window.innerWidth + 310;
 
-let cloud = document.querySelector(".cloud");
+// let presenceAnimation = false; window.innerWidth
+let WidthWindow = 1920 + 310;
+const clouds = document.querySelectorAll(".cloud");
+let cloudLeft = null;
+let newcloudLeft = null;
 
 function flyingСlouds() {
 	// if (presenceAnimation = !presenceAnimation) {
-		// for (let cloud of clouds) {
-			let cloudLeft = Math.round(cloud.getBoundingClientRect().left);
-			if (600 > cloudLeft) {
-				// cloudLeft = cloudLeft + "px";
-				// cloud.style.left = cloudLeft;
-				const newcloudLeft = cloudLeft + 1;
+		for (let cloud of clouds) {
+			cloudLeft = Math.round(cloud.getBoundingClientRect().left);
+			if (WidthWindow > cloudLeft) {
+				newcloudLeft = cloudLeft + 1;
 				cloud.style.transform = `translate(${newcloudLeft}px)`;
 			} else {
-				cloud.style.transform = `translate(100px)`
+				cloud.style.transform = `translate(-340px)`; 
 			}
-		// }
+		}
 	// }
 	requestAnimationFrame(flyingСlouds);
 }
 
-flyingСlouds();
+flyingСlouds()
