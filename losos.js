@@ -389,6 +389,7 @@ let WidthWindow = window.innerWidth + 310;
 
 function changeDistanceDeletingCloud() {
 	WidthWindow = window.innerWidth + 310;
+	console.log(12);
 }
 
 function flyingСlouds() {
@@ -406,5 +407,5 @@ function flyingСlouds() {
 	requestAnimationFrame(flyingСlouds);
 }
 
-window.addEventListener("reset", changeDistanceDeletingCloud);
+window.addEventListener("resize", changeDistanceDeletingCloud);
 requestAnimationFrame(flyingСlouds);
