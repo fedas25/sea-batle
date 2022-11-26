@@ -19,6 +19,7 @@ html {
 	position: fixed;
 	height: 210px;
 	width: 310px;
+	pointer-events: none;
 }
 
 .cloud-small {
@@ -136,6 +137,7 @@ html {
 	width: 100%;
 	position: absolute;
 	bottom: 0;
+	pointer-events: none;
 }
 
 body {
@@ -161,6 +163,7 @@ body {
 	height: 600px;
 	width: 620px;
 	z-index: 1;
+	pointer-events: none;
 }
 
 .game-space > p {
